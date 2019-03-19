@@ -6,7 +6,7 @@ const ListLoop = (props) => {
     const lists= props.lists.map((list)=>{
         if(props.editListId === list.id){
             return (
-                <ListForm list={list} key={list.id} />
+                <ListForm list={list} key={list.id} updateList={props.updateList} updateNotification={props.updateNotification} resetNotification={props.resetNotification} />
             )
         }else{
             return(
