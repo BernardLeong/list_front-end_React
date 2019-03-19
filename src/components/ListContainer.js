@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import ListLoop from './ListLoop'
+import NotifyUser from './NotifyUser'
 import NewListButton from './NewListButton'
 import update from 'immutability-helper'
 
@@ -9,7 +10,8 @@ class ListContainer extends Component {
         super(props)
         this.state = {
             lists: [],
-            editListId: null
+            editListId: null,
+            notification: ''
         }
     }
 
@@ -19,6 +21,14 @@ class ListContainer extends Component {
         this.setState({lists: response.data})
       })
       .catch(error => console.log(error))
+    }
+
+    updateList = (list) => {
+      const listIndex = this.state.lists.findIndex(x => x.id === list.id)
+      const lists = update(this.state.lists, {
+        [listIndex]: { $set: list }
+      })
+      this.setState({lists: lists})
     }
 
     addNewIdea = () => {
@@ -38,6 +48,15 @@ class ListContainer extends Component {
       })
       .catch(error => console.log(error))
     }
+
+
+    updateNotification = () => {
+      this.setState({notification: "All changes saved"})
+    }
+
+    resetNotification = () => {
+      this.setState({notification: ''})
+    }
     
   render() {
    
@@ -48,7 +67,8 @@ class ListContainer extends Component {
     return (
       <div>
       <NewListButton addNewIdea={this.addNewIdea}/>
-        <ListLoop lists={lists} editListId={listId} />
+      < NotifyUser notify={this.state.notification} />
+        <ListLoop resetNotification={this.resetNotification}  updateNotification={this.updateNotification} updateList={this.updateList} lists={lists} editListId={listId} />
       </div>
     )
   }
