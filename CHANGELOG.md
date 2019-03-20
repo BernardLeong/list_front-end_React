@@ -14,3 +14,6 @@
 
 **FEAT** - Added list form on new list
 
+# 201903.04
+
+**FEAT** - Added delete, focus form in react
