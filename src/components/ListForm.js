@@ -39,10 +39,8 @@ class ListForm extends Component {
         return(
             <div className='tile'>
                 <form onBlur={this.handleBlur}>
-                {console.log(this.props.updateList)}
-                    {/* {console.log(this.state.title,this.state.body)} */}
                 <input className='input' type="text"
-            name="title" value={this.state.title} onChange={this.handleInput} placeholder='Enter a Title' />
+            name="title" value={this.state.title} ref={this.props.titleRef} onChange={this.handleInput} placeholder='Enter a Title' />
           <textarea className='input' name="body"
             placeholder='Describe your idea' onChange={this.handleInput} value={this.state.body}></textarea>
                 </form>

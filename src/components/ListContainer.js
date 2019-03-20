@@ -31,6 +31,10 @@ class ListContainer extends Component {
       this.setState({lists: lists})
     }
 
+    enableEditing = (id) => {
+      this.setState({editListId: id},() => { this.nameInput.focus() })
+    }
+
     addNewIdea = () => {
       const body = {list: {title: '', body: ''} }
       axios.post(
@@ -49,6 +53,15 @@ class ListContainer extends Component {
       .catch(error => console.log(error))
     }
 
+    deleteIdea = (id) => {
+      axios.delete(`http://localhost:3001/api/v1/lists/${id}`)
+      .then(response => {
+        const listIndex = this.state.lists.findIndex(x => x.id === id)
+        const lists = update(this.state.lists, { $splice: [[listIndex, 1]]})
+        this.setState({lists: lists})
+      })
+      .catch(error => console.log(error))
+    }
 
     updateNotification = () => {
       this.setState({notification: "All changes saved"})
@@ -68,7 +81,7 @@ class ListContainer extends Component {
       <div>
       <NewListButton addNewIdea={this.addNewIdea}/>
       < NotifyUser notify={this.state.notification} />
-        <ListLoop resetNotification={this.resetNotification}  updateNotification={this.updateNotification} updateList={this.updateList} lists={lists} editListId={listId} />
+        <ListLoop onDelete={this.deleteIdea} titleRef= {input => this.nameInput = input} onClick={this.enableEditing} resetNotification={this.resetNotification}  updateNotification={this.updateNotification} updateList={this.updateList} lists={lists} editListId={listId} />
       </div>
     )
   }
